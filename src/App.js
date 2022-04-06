@@ -23,10 +23,6 @@ function App() {
 
   useEffect(() => {
     async function getMedia(constraints) {
-      var constraints = {
-        audio: true,
-        video: { width: 300, height: 300, facingMode: "user" },
-      };
       // Older browsers might not implement mediaDevices at all, so we set an empty object first
       if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {};
@@ -69,7 +65,11 @@ function App() {
         console.log(err);
       }
     }
-    getMedia()
+    var constraints = {
+      audio: true,
+      video: { width: 300, height: 300, facingMode: "user" },
+    };
+    getMedia(constraints);
   }, []);
 
   return (
