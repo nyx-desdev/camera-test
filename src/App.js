@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -6,19 +6,41 @@ function App() {
   const photoRef = useRef(null);
   const [hasPhoto, setHasPhoto] = useState(false);
 
+  async function getMedia(constraints) {
+    let stream = null;
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(constraints);
+      /* use the stream */
+      let video = videoRef.current;
+      video.srcObject = stream;
+      video.play();
+    } catch (err) {
+      /* handle the error */
+      console.log(err);
+    }
+  }
+
   const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: { width: 300, height: 300 },
-      })
-      .then((stream) => {
-        let video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    var constraints = {
+      audio: true,
+      video: { width: 300, height: 300, facingMode: "user" },
+    };
+    getMedia(constraints);
+
+    // console.log('videoref',videoRef)
+    // navigator.mediaDevices
+    //   .getUserMedia({
+    //     video: { width: 300, height: 300 },
+    //   })
+    //   .then((stream) => {
+    //     let video = videoRef.current;
+    //     video.srcObject = stream;
+    //     video.play();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   const takePhoto = () => {
@@ -31,9 +53,9 @@ function App() {
     photo.width = width;
     photo.height = height;
 
-    let ctx = photo.getContext('2d')
-    ctx.drawImage(video, 0, 0, width, height)
-    setHasPhoto(true)
+    let ctx = photo.getContext("2d");
+    ctx.drawImage(video, 0, 0, width, height);
+    setHasPhoto(true);
   };
 
   useEffect(() => {
