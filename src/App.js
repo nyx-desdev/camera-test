@@ -23,6 +23,7 @@ function App() {
 
   useEffect(() => {
     async function getMedia(constraints) {
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
       // Older browsers might not implement mediaDevices at all, so we set an empty object first
       if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {};
@@ -75,7 +76,7 @@ function App() {
   return (
     <div className="App">
       <div className="camera">
-        <video ref={videoRef}></video>
+        <video ref={videoRef} playsinline></video>
         <button onClick={takePhoto}>Snap</button>
       </div>
       <div className={"result" + (hasPhoto ? "hasPhoto" : "")}>
