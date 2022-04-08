@@ -23,7 +23,12 @@ function App() {
 
   useEffect(() => {
     async function getMedia(constraints) {
-      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+      navigator.getUserMedia =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia ||
+        navigator.oGetUserMedia;
       // Older browsers might not implement mediaDevices at all, so we set an empty object first
       if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {};
@@ -60,6 +65,7 @@ function App() {
         /* use the stream */
         let video = videoRef.current;
         video.srcObject = stream;
+        video.setAttribute("playsinline", true);
         video.play();
       } catch (err) {
         /* handle the error */
